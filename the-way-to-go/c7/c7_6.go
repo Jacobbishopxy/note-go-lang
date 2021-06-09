@@ -1,6 +1,11 @@
 package c7
 
-import "fmt"
+import (
+	"fmt"
+	"io/ioutil"
+	"regexp"
+	"sort"
+)
 
 // 字符串生成字节切片
 func stringToByteSlice() {
@@ -77,6 +82,61 @@ func appendFuncCommonUsage() {
 
 }
 
+// 将一个文件加载到内存，搜索其中所有的数字并返回一个切片
+func sliceGc(f string) []byte {
+	var digitRegexp = regexp.MustCompile("[0-9]+")
+
+	findDigits := func(filename string) []byte {
+		fileBytes, _ := ioutil.ReadFile(filename)
+		b := digitRegexp.FindAll(fileBytes, len(fileBytes))
+		// 为了避免返回的切片不被释放，需要拷贝需要的部分到一个新的切片中再返回
+		c := make([]byte, 0)
+		for _, bytes := range b {
+			c = append(c, bytes...)
+		}
+		return c
+	}
+
+	return findDigits(f)
+}
+
+func stringRevert(s string) string {
+	sc := []byte(s)
+	sLen := len(s)
+	for i := 0; i < sLen/2; i++ {
+		sc[i], sc[sLen-i-1] = sc[sLen-i-1], sc[i]
+	}
+	return string(sc)
+}
+
+func stringDif(s string) (res string) {
+	var prev rune
+	res = ""
+	for _, c := range s {
+		if c != prev {
+			res += string(c)
+		}
+		prev = c
+	}
+	return
+}
+
+func bubbleSort(data sort.Interface) {
+	n := data.Len()
+	for i := 0; i < n-1; i++ {
+		isChanged := false
+		for j := 0; j < n-1-i; j++ {
+			if data.Less(j, j+1) {
+				data.Swap(j, j+1)
+				isChanged = true
+			}
+		}
+		if !isChanged {
+			break
+		}
+	}
+}
+
 func C7_6() {
 
 	stringToByteSlice()
@@ -88,4 +148,14 @@ func C7_6() {
 	fmt.Println(compareStringByteSlice(a, b))
 
 	appendFuncCommonUsage()
+
+	fmt.Println(sliceGc("./go.mod"))
+
+	fmt.Println(stringRevert("Google"))
+
+	fmt.Println(stringDif("Doodle ooo"))
+
+	l := []int{2, 1, 5, 4, 3}
+	bubbleSort(sort.IntSlice(l))
+	fmt.Println("Sorted result: ", l)
 }
