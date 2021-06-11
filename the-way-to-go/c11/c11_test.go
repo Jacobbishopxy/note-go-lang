@@ -9,3 +9,7 @@ func TestC11_1(t *testing.T) {
 func TestC11_3(t *testing.T) {
 	C11_3()
 }
+
+func TestC11_6(t *testing.T) {
+	C11_6()
+}
