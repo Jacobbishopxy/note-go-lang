@@ -13,3 +13,15 @@ func TestC11_3(t *testing.T) {
 func TestC11_6(t *testing.T) {
 	C11_6()
 }
+
+func TestC11_9(t *testing.T) {
+	C11_9()
+}
+
+func TestC11_10(t *testing.T) {
+	C11_10()
+}
+
+func TestC11_12(t *testing.T) {
+	C11_12()
+}
